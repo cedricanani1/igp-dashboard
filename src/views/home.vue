@@ -194,7 +194,7 @@ export default {
             .then(function (reponse){
                 var keys 
                 var values 
-                console.log('rep',reponse.data);
+                
                 reponse.data.stat.forEach((element) =>{
                     keys = Object.keys(element)
                     values = Object.values(element)
@@ -204,7 +204,7 @@ export default {
                     app.data.push(['20'+y+'-'+m+'-01',values[i]])
                 }
                 })
-                
+                console.log('rep',reponse.data);
             })
             console.log('data',app.data);
             app.state = true

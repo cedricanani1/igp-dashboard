@@ -8,9 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "alga-js": "^0.1.0-wood-I",
     "axios": "^0.21.4",
-    "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "datatables.net": "^1.11.3",
     "datatables.net-dt": "^1.11.3",
@@ -18,7 +16,6 @@
     "moment": "^2.29.1",
     "sweetalert2": "^11.2.0",
     "vue": "^2.6.11",
-    "vue-chartjs": "^3.5.1",
     "vue-chartkick": "^0.6.1",
     "vue-cli": "^2.9.6",
     "vue-loading-overlay": "3.0",
