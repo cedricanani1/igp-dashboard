@@ -24,6 +24,7 @@
                                     <th>Format</th>
                                     <th>Discount</th>
                                     <th>Ville</th>
+                                    <th>Maps</th>
                                     <th v-if="perms.includes('delete-panel') || perms.includes('show-panel')">Actions</th> 
                                 </tr>
                             </thead>
@@ -37,6 +38,9 @@
                                     <td>{{ pan.discount }}</td> 
                                     <td v-if="pan.city"> {{ pan.city.libelle }} </td> 
                                     <td v-else>Ville introuvable</td>
+                                    <td>
+                                        <iframe :src="'https://maps.google.com/maps?q=' + pan.lat + ',' + pan.long + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" />
+                                    </td>
                                     <td v-if="perms.includes('delete-panel') || perms.includes('show-panel')">
                                         <div class="d-flex align-items-center list-action">
                                             <router-link :to="{name:'RegiePanneauxShow', params:{id: pan.id}}" v-if="perms.includes('show-panel')"

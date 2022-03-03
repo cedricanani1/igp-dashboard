@@ -106,7 +106,6 @@
                                                     <th>Date fin</th>
                                                     <th>Nb jour</th>
                                                     <th>prix total</th>
-                                                    <th>Maps</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="ligth-body">
@@ -120,9 +119,7 @@
                                                     <td>{{panier.to}}</td>
                                                     <td>{{panier.days}}</td>
                                                     <td> {{Number(panier.days*panier.price)}}</td>
-                                                    <td>
-                                                        <iframe :src="'https://maps.google.com/maps?q=' + panier.panel.lat + ',' + panier.panel.long + '&t=&z=15&ie=UTF8&iwloc=&output=embed'" />
-                                                    </td>
+                                                    
                                                 </tr>
                                             </tbody>
                                         </table>
