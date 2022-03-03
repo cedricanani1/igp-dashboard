@@ -95,8 +95,8 @@
                                             </div>
                                         </div>                        
                                     </div>                            
-                                    <button v-if="perms.includes('edit-car-orders')" type="submit" class="btn btn-primary mr-2">Modifier</button>
-                                    <button v-if="perms.includes('edit-car-orders')" type="reset" class="btn btn-danger">reinitialiser</button>
+                                    <button v-if="perms.includes('edit-car-order')" type="submit" class="btn btn-primary mr-2">Modifier</button>
+                                    <button v-if="perms.includes('edit-car-order')" type="reset" class="btn btn-danger">reinitialiser</button>
                                 </form>
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
@@ -112,7 +112,7 @@
                                                     <th>Nb jour</th>
                                                     <th>prix total</th>
                                                     <th>Chauffeur</th>
-                                                    <th v-if="perms.includes('edit-car-orders')">Actions</th>
+                                                    <th v-if="perms.includes('edit-car-order')">Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="ligth-body">
@@ -126,7 +126,7 @@
                                                     <td> {{Number(panier.days*panier.price)}}</td>
                                                     <td v-if="panier.photo" @click="orderImage(panier.photo)"> Avec Chauffeur</td>
                                                     <td v-else > Sans chauffeur </td>
-                                                    <td  v-if="perms.includes('edit-car-orders')">
+                                                    <td  v-if="perms.includes('edit-car-order')">
                                                         <div v-if="!panier.edit" class="d-flex align-items-center list-action" >
                                                             <button class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
                                                                 @click="update(index)"><i class="ri-delete-bin-line mr-0"></i> Modifier</button>

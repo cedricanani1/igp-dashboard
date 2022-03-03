@@ -144,15 +144,23 @@ export default {
             if (result.isConfirmed) {
                 this.isLoading =  true
                 axios.delete(URL_REGIE_API+'panels/'+id)
-                .then(response => {
-                    console.log(response.data)
+                .then(reponse => {
+                    console.log(reponse.data)
                     this.isLoading =  false
-                    Swal.fire(
+                    if (reponse.data.state == true) {
+                        Swal.fire(
                         'Supprimé!',
                         'Le panneau a été supprimée.',
                         'success'
+                        )
+                    }
+                    else {
+                        Swal.fire(
+                        'Note',
+                        'Impossible de supprimer ce panneau.',
+                        'info'
                     )
-                    location.reload()
+                    }
                 })
                 .catch(error => {
                     console.log(error)

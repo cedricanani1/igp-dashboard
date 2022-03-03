@@ -23,7 +23,6 @@ import EcommerceProductTypeShow from "./views/Ecommerce/Type/show.vue"
 
     // * Order
 
-import EcommerceOrderCreate from "./views/Ecommerce/Order/create.vue"
 import EcommerceOrderIndex from "./views/Ecommerce/Order/index.vue"
 import EcommerceOrderEdit from "./views/Ecommerce/Order/edit.vue"
 import EcommerceOrderShow from "./views/Ecommerce/Order/show.vue"
@@ -60,7 +59,6 @@ import TransportCarModelShow from "./views/Transport/model/show.vue"
 
     // * Order
 
-import TransportOrderCreate from "./views/Transport/order/create.vue"
 import TransportOrderIndex from "./views/Transport/order/index.vue"
 import TransportOrderEdit from "./views/Transport/order/edit.vue"
 import TransportOrderShow from "./views/Transport/order/show.vue"
@@ -254,15 +252,7 @@ const routes = [
         }
       },
           // * COMMANDE
-          {
-            path: "/create-e-commerce-order",
-            name: "EcommerceOrderCreate",
-            component: EcommerceOrderCreate,
-            meta: {
-              layout: "Default",
-              requiredAuth: true
-            }
-          },
+          
           {
             path: "/e-commerce-orders",
             name: "EcommerceOrderIndex",
@@ -557,15 +547,7 @@ const routes = [
         }
       },
           // * COMMANDE
-          {
-            path: "/create-transport-order",
-            name: "TransportOrderCreate",
-            component: TransportOrderCreate,
-            meta: {
-              layout: "Default",
-              requiredAuth: true
-            }
-          },
+          
           {
             path: "/transport-orders",
             name: "TransportOrderIndex",
