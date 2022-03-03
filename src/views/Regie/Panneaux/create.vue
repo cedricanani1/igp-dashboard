@@ -176,7 +176,7 @@ export default {
                 console.log('reponse', reponse.data)
                 if (reponse.data.state) {
                     Swal.fire({
-                        title: 'Modifié!',
+                        title: 'Ajouté!',
                         text: 'Le panneau a été créé avec succès.',
                         icon: 'success',
                         timer: 2000,
