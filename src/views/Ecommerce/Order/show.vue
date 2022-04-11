@@ -34,8 +34,8 @@
                                                 <label>status de la commande *</label>
                                                 <select v-model="order.status" class="form-control" name="" id="">
                                                     <option value="new">Nouvelle commande</option>
-                                                    <option value="process">En cours</option>
-                                                    <option value="delivered">Commande livrée</option>
+                                                    <option value="process">Validation</option>
+                                                    <option value="delivered">Commande validée</option>
                                                     <option value="cancel">Annulé</option>
                                                 </select>
                                             </div>
@@ -47,6 +47,13 @@
                                                 <div class="help-block with-errors"></div>
                                             </div>
                                         </div>   
+                                        <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Date de la commande *</label>
+                                                    <input type="text" v-model="order.created_at" class="form-control" placeholder="" readonly>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div> 
                                     </div>  
                                     <hr>
                                     <div class="row">
@@ -112,7 +119,7 @@
                                                     <td v-if="panier.color == 'undefined'">Pas de Couleur</td>
                                                     <td v-else>{{panier.color}}</td>
                                                     <td> {{Number(panier.quantity*panier.price)}}</td>
-                                                    <td v-if="panier.photo" @click="orderImage(panier.photo)"> voir photo</td>
+                                                    <td v-if="panier.photo" id="myDiv" @click="orderImage( panier.photo)"> voir photo</td>
                                                     <td v-else>Pas de photo</td>
                                                     <td v-if="perms.includes('edit-order')">
                                                         <div v-if="!panier.edit" class="d-flex align-items-center list-action" >
@@ -153,6 +160,8 @@ import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
 import Swal from 'sweetalert2'
+import moment from 'moment'
+moment.locale('fr')
 export default {
     components: {
         Loading
@@ -172,7 +181,7 @@ export default {
         this.user.permissions.forEach(element => {
             this.perms.push(element.name)
         });
-
+        
         this.getorder()
     },
     methods:{
@@ -189,7 +198,8 @@ export default {
                 title: '',
                 text: '',
                 imageUrl: URL_COMMERCE+path,
-                imageAlt: 'Custom image',
+                imageAlt: 'Custom image', 
+  imageHeight: 400,
             })
         },
         save(panier) {
@@ -247,6 +257,7 @@ export default {
                     element.edit=false
                 });
                 this.order = response.data
+                this.order.created_at = moment(response.data.created_at).format("Do MMMM YYYY H:m");
                 this.isLoading = false
                 
             })

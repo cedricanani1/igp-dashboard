@@ -102,11 +102,22 @@
                                 </div>  
                                 <div class="row">  
                                     <div class="col-md-6">
-                                        <div >
+                                        <div class="form-group">
                                             <label for="">Ajouter une photo</label>
-                                            <input type="file" ref="photo">
+                                            <input class="form-control" type="file" ref="photo">
                                         </div>  
-                                    </div>    
+                                    </div>   
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Type de panneau *</label>
+                                            <select class="form-control" v-model="panel.type_panneau_id" name="" id="">
+                                                <option value="">Choisir une option</option>
+                                                <option v-for="(type, index) in types" :key="index" :value="type.id"> {{ type.libelle }} </option>
+                                                
+                                            </select>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div> 
                                 </div>              
                                 <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
                                 <button type="reset" class="btn btn-danger">reinitialiser</button>
@@ -142,16 +153,39 @@ export default {
             cities:{},
             isLoading: false,
             fullPage: true,
-            photos:null
+            photos:null,
+            types: {}
         };
     },
     mounted(){
-        this.getPAnel()
+        this.getPanel()
         this.getCities()
+        this.getTypes()
     },
 
     methods:{
-        getPAnel() {
+        getTypes() {
+            let app = this 
+            app.isLoading =  true
+            axios.get(URL_REGIE_API+'type-panneaux')
+            .then(response => {
+                        
+                console.log(response.data)
+                app.types = response.data
+                app.isLoading =  false
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+                Swal.fire(
+                        'Erreur!',
+                        'Une erreur s\'est produite lors de la recuperation des données !',
+                        'error'
+                )
+                this.isLoading =  false
+            })
+        },
+        getPanel() {
             this.isLoading = true
             axios.get(URL_REGIE_API+'panels/'+this.$route.params.id)
             .then(response => {
@@ -181,6 +215,7 @@ export default {
             panelData.append('city_id',this.panel.city_id)
             panelData.append('discount',this.panel.discount)
             panelData.append('url',this.panel.url)
+            panelData.append('type_panneau_id',this.panel.type_panneau_id)
             panelData.append('id',this.$route.params.id)
             axios.post(URL_REGIE_API+'panel-update', panelData)
             .then(response => {

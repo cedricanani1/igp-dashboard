@@ -117,7 +117,7 @@ export default {
             } 
                     axios.post(URL_COMMERCE_API+'sellingStat', app.payload)
             .then(function (reponse){
-                console.log('rep',reponse.data);
+                console.log('rep',reponse);
                 reponse.data.data.forEach(element => {
                     element.stack = 'stack1'
                 });

@@ -24,7 +24,7 @@ import EcommerceProductTypeShow from "./views/Ecommerce/Type/show.vue"
     // * Order
 
 import EcommerceOrderIndex from "./views/Ecommerce/Order/index.vue"
-import EcommerceOrderEdit from "./views/Ecommerce/Order/edit.vue"
+import EcommerceOrderCreate from "./views/Ecommerce/Order/create.vue"
 import EcommerceOrderShow from "./views/Ecommerce/Order/show.vue"
 
 // TRANSPORT
@@ -88,6 +88,13 @@ import TransportOrderShow from "./views/Transport/order/show.vue"
 
 // REGIE
 
+    // * Type
+
+    import RegieTypeCreate from "./views/Regie/Type/create.vue"
+    import RegieTypeIndex from "./views/Regie/Type/index.vue"
+    import RegieTypeShow from "./views/Regie/Type/show.vue"
+    import RegieTypeEdit from "./views/Regie/Type/edit.vue"
+
     // * Pays
 
     import RegiePaysCreate from "./views/Regie/Pays/create.vue"
@@ -120,6 +127,7 @@ import TransportOrderShow from "./views/Transport/order/show.vue"
 
     import RegieOrdersIndex from "./views/Regie/Orders/index.vue"
     import RegieOrdersShow from "./views/Regie/Orders/show.vue"
+    import RegieOrdersCreate from "./views/Regie/Orders/create.vue"
     
     // * Users
 
@@ -146,6 +154,24 @@ import TransportOrderShow from "./views/Transport/order/show.vue"
   // * Transport
 
   import StatsRegie from "./views/Stats/regie.vue"
+
+  // CHARTS
+
+  // * E-commerce
+
+  import ChartsCommerce from "./views/Charts/e-commerce.vue"
+  
+  // * Logistique
+
+  import ChartsLogistique from "./views/Charts/logistique.vue"
+  
+  // * Transport
+
+  import ChartsTransport from "./views/Charts/transport.vue"
+  
+  // * Transport
+
+  import ChartsRegie from "./views/Charts/regie.vue"
 
 const routes = [
     {
@@ -272,9 +298,9 @@ const routes = [
             }
           },
           {
-            path: "/edit-e-commerce-order/:id",
-            name: "EcommerceOrderEdit",
-            component: EcommerceOrderEdit,
+            path: "/create-e-commerce-order",
+            name: "EcommerceOrderCreate",
+            component: EcommerceOrderCreate,
             meta: {
               layout: "Default",
               requiredAuth: true
@@ -616,6 +642,45 @@ const routes = [
               requiredAuth: true
             },
           },
+
+          // * Type
+      
+          {
+            path: "/create-regie-type",
+            name: "RegieTypeCreate",
+            component: RegieTypeCreate,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
+          {
+            path: "/index-regie-types",
+            name: "RegieTypeIndex",
+            component: RegieTypeIndex,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
+          {
+            path: "/show-regie-type/:id",
+            name: "RegieTypeShow",
+            component: RegieTypeShow,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
+          {
+            path: "/edit-regie-type/:id",
+            name: "RegieTypeEdit",
+            component: RegieTypeEdit,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
           
           // * Regions
       
@@ -754,6 +819,15 @@ const routes = [
               requiredAuth: true
             },
           },
+          {
+            path: "/create-regie-orders",
+            name: "RegieOrdersCreate",
+            component: RegieOrdersCreate,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
           
           // * Users
                 
@@ -843,6 +917,52 @@ const routes = [
             path: "/stats-regie",
             name: "StatsRegie",
             component: StatsRegie,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
+
+    // STATS
+              
+          // * E-commerce
+          {
+            path: "/charts-e-commerce",
+            name: "ChartsCommerce",
+            component: ChartsCommerce,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
+          
+          // * Transport
+          {
+            path: "/charts-transport",
+            name: "ChartsTransport",
+            component: ChartsTransport,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
+          
+          // * Logistique
+          {
+            path: "/charts-logistique",
+            name: "ChartsLogistique",
+            component: ChartsLogistique,
+            meta: {
+              layout: "Default",
+              requiredAuth: true
+            },
+          },
+          
+          // * Regie
+          {
+            path: "/charts-regie",
+            name: "ChartsRegie",
+            component: ChartsRegie,
             meta: {
               layout: "Default",
               requiredAuth: true

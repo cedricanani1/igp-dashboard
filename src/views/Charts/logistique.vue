@@ -57,7 +57,7 @@
 
 <script>
 import axios from 'axios'
-import {URL_COMMERCE_API, URL_COMMERCE} from '@/config'
+import {URL_LOGISTIQUE_API, URL_COMMERCE} from '@/config'
 import Swal from 'sweetalert2'
 //import store from '@/store'
 
@@ -115,7 +115,7 @@ export default {
             if (app.payload.annee != null) {
                 app.payload.annee = app.payload.annee.split('-')[0]
             } 
-                    axios.post(URL_COMMERCE_API+'sellingStat', app.payload)
+                    axios.post(URL_LOGISTIQUE_API+'sellingStat', app.payload)
             .then(function (reponse){
                 console.log('rep',reponse.data);
                 reponse.data.data.forEach(element => {

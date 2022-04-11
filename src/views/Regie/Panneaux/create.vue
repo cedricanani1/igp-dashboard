@@ -104,7 +104,18 @@
                                             <label for="">Ajouter une photo</label>
                                             <input type="file" ref="photo">
                                         </div>  
-                                    </div>    
+                                    </div>  
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Type de panneau *</label>
+                                            <select class="form-control" v-model="panel.type_panneau_id" name="" id="">
+                                                <option value="">Choisir une option</option>
+                                                <option v-for="(type, index) in types" :key="index" :value="type.id"> {{ type.libelle }} </option>
+                                                
+                                            </select>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>   
                                 </div>              
                                 <button type="submit" class="btn btn-primary mr-2">Enregistrer</button>
                                 <button type="reset" class="btn btn-danger">reinitialiser</button>
@@ -133,6 +144,7 @@ import axios from 'axios'
 export default {
     mounted(){
         this.getCities()
+        this.getTypes()
     },
     data(){
         return{
@@ -155,6 +167,27 @@ export default {
         }
     },
     methods:{
+        getTypes() {
+            let app = this 
+            app.isLoading =  true
+            axios.get(URL_REGIE_API+'type-panneaux')
+            .then(response => {
+                        
+                console.log(response.data)
+                app.types = response.data
+                app.isLoading =  false
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+                Swal.fire(
+                        'Erreur!',
+                        'Une erreur s\'est produite lors de la recuperation des données !',
+                        'error'
+                )
+                this.isLoading =  false
+            })
+        },
         store: function(){
             var panelData = new FormData();
              this.photos = this.$refs.photo.files[0]

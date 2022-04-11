@@ -8,7 +8,7 @@
                   <i class="las la-bars wrapper-menu"></i>
               </div>
           </div>
-          <div class="scroller data-scrollbar" data-scroll="3">
+          <div class="scroller data-scrollbar" data-scroll="7">
               <nav class="iq-sidebar-menu">
                     <ul id="iq-sidebar-toggle" class="iq-menu" v-if="roles.length > 0">
                       <li class="active">
@@ -45,8 +45,8 @@
                                   </li>
                                   
                                   <li class="">
-                                    <router-link to="/e-commerce-orders" v-if="perms.includes('index-orders')">
-                                        <i class="las la-minus"></i><span>Commandes</span>
+                                    <router-link to="/e-commerce-orders" v-if="perms.includes('index-orders')" class="notification">
+                                        <i class="las la-minus"></i><span>Commandes</span><span class="badge" v-if="orders_com > 0"> {{ this.orders_com }} </span>
                                     </router-link>
                                   </li>
                           </ul>
@@ -84,8 +84,8 @@
                                         </router-link>
                                 </li>
                                 <li class="">
-                                    <router-link to="/transport-orders" v-if="perms.includes('index-car-orders')">
-                                            <i class="las la-minus"></i><span>Commandes</span>
+                                    <router-link to="/transport-orders" v-if="perms.includes('index-car-orders')" class="notification">
+                                            <i class="las la-minus"></i><span>Commandes</span><span class="badge" v-if="orders_tp > 0"> {{ this.orders_tp }} </span>
                                         </router-link>
                                 </li>
                           </ul>
@@ -114,8 +114,8 @@
                                   </li>
                                   
                                   <li class="">
-                                    <router-link to="/logistique-orders" v-if="perms.includes('index-event-orders')">
-                                        <i class="las la-minus"></i><span>Commandes</span>
+                                    <router-link to="/logistique-orders" v-if="perms.includes('index-event-orders')" class="notification">
+                                        <i class="las la-minus"></i><span>Commandes</span><span class="badge" v-if="orders_log > 0"> {{ this.orders_log }} </span>
                                     </router-link>
                                   </li>
                           </ul>
@@ -151,9 +151,14 @@
                                         <i class="las la-minus"></i><span>Panneaux</span>
                                     </router-link>
                                 </li>
+                                <li class="" v-if="perms.includes('index-countries')">
+                                    <router-link to="/index-regie-types">
+                                        <i class="las la-minus"></i><span>Types de panneau</span>
+                                    </router-link>
+                                </li>
                                 <li class="">
-                                    <router-link to="/index-regie-orders" v-if="perms.includes('index-panel-orders')">
-                                        <i class="las la-minus"></i><span>Commandes</span>
+                                    <router-link to="/index-regie-orders" v-if="perms.includes('index-panel-orders')" class="notification">
+                                        <i class="las la-minus"></i><span>Commandes</span><span class="badge" v-if="this.orders_reg > 0"> {{ this.orders_reg }} </span>
                                     </router-link>
                                 </li>
                           </ul>
@@ -205,11 +210,47 @@
                                         <i class="las la-minus"></i><span>Logistique</span>
                                     </router-link>
                                 </li>
-                                <!-- <li class="">
+                                <li class="">
                                     <router-link to="/stats-regie">
                                         <i class="las la-minus"></i><span>Regie</span>
                                     </router-link>
-                                </li> -->
+                                </li> 
+                                
+                                
+                          </ul>
+                      </li>
+                      <li class=" " v-if="adm == true">
+                          <a href="#chart" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                              <svg  class="svg-icon" id="p-dash1" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line>
+                              </svg>
+                              <span class="ml-4">Graphiques</span>
+                              <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                  <polyline points="10 15 15 20 20 15"></polyline><path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                              </svg>
+                          </a>
+                          <ul id="chart" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                
+                                <li class="">
+                                    <router-link to="/charts-e-commerce">
+                                        <i class="las la-minus"></i><span>E-commerce</span>
+                                    </router-link>
+                                </li>
+                                <li class="">
+                                    <router-link to="/charts-transport">
+                                        <i class="las la-minus"></i><span>Transport</span>
+                                    </router-link>
+                                </li>
+                                <li class="">
+                                    <router-link to="/charts-logistique">
+                                        <i class="las la-minus"></i><span>Logistique</span>
+                                    </router-link>
+                                </li>
+                                <li class="">
+                                    <router-link to="/charts-regie">
+                                        <i class="las la-minus"></i><span>Regie</span>
+                                    </router-link>
+                                </li> 
                                 
                                 
                           </ul>
@@ -221,8 +262,15 @@
         </div>
 </template>
 <script>
+import axios from 'axios'
+import {URL_COMMERCE_API, URL_REGIE_API, URL_TRANSPORT_API, URL_LOGISTIQUE_API} from '@/config'
 export default {
+    
     mounted(){
+        this.getcom()
+        this.getreg()
+        this.gettp()
+        this.getlog()
         this.user.roles.forEach(element => {
             this.roles.push(element.name)
         });
@@ -249,10 +297,107 @@ export default {
             tr:false,
             log:false,
             reg:false,
+            orders_com: 0,
+            orders_log: 0,
+            orders_tp: 0,
+            orders_reg: 0
         };
     },
     methods:{
-        
+        getcom() {
+            this.isLoading = true
+            let app = this
+            axios.get(URL_COMMERCE_API+'orders')
+            .then(response => {
+                console.log(response.data)
+                
+                response.data.forEach(function(element){
+                    if (element.status == 'new') {
+                        app.orders_com ++
+                    }
+                })
+                app.isLoading = false
+                
+            })
+            .catch(error => {
+                console.log(error)
+                app.errored = true
+                app.isLoading = false
+            })
+        },
+        getlog() {
+            this.isLoading = true
+            let app = this
+            axios.get(URL_LOGISTIQUE_API+'orders')
+            .then(response => {
+                console.log(response.data)
+                
+                response.data.forEach(function(element){
+                    if (element.status == 'new') {
+                        app.orders_log ++
+                    }
+                })
+                app.isLoading = false
+                
+            })
+            .catch(error => {
+                console.log(error)
+                app.errored = true
+                app.isLoading = false
+            })
+        },
+        getreg() {
+            this.isLoading = true
+            let app = this
+            axios.get(URL_REGIE_API+'orders')
+            .then(response => {
+                console.log(response.data)
+                
+                response.data.forEach(function(element){
+                    if (element.status == 'new') {
+                        app.orders_reg++
+                    }
+                })
+                app.isLoading = false
+                
+            })
+            .catch(error => {
+                console.log(error)
+                app.errored = true
+                app.isLoading = false
+            })
+        },
+        gettp() {
+            this.isLoading = true
+            let app = this
+            axios.get(URL_TRANSPORT_API+'orders')
+            .then(response => {
+                console.log(response.data)
+                
+                response.data.forEach(function(element){
+                    if (element.status == 'new') {
+                        app.orders_tp ++
+                    }
+                })
+                app.isLoading = false
+                
+            })
+            .catch(error => {
+                console.log(error)
+                app.errored = true
+                app.isLoading = false
+            })
+        },
     }
 }
 </script>
+<style>
+
+.notification .badge {
+  position: absolute;
+  padding: 5px 10px;
+  border-radius: 50%;
+  background: red;
+  color: white;
+}
+</style>

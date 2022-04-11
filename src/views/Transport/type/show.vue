@@ -35,8 +35,8 @@
                                         </div>
                                     </div>                                 
                                 </div>                            
-                                <button v-if="perms.include('edit-car-type')" type="submit" class="btn btn-primary mr-2">Modifier</button>
-                                <button v-if="perms.include('edit-car-type')" type="reset" class="btn btn-danger">Reinitialiser</button>
+                                <button v-if="perms.includes('edit-car-type')" type="submit" class="btn btn-primary mr-2">Modifier</button>
+                                <button v-if="perms.includes('edit-car-type')" type="reset" class="btn btn-danger">Reinitialiser</button>
                             </form>
                         </div>
                     </div>

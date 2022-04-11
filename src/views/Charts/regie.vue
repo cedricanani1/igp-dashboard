@@ -15,14 +15,14 @@
                     
                 </div>
 
-                <div class="col-lg-12">
+                <div class=" col-lg-12">
                     <button class="btn btn-primary add-list col-lg-2 ml-5" @click="jour">Jour</button>
                     <button class="btn btn-primary add-list col-lg-2 ml-5" @click="semaine">Semaine</button>
                     <button class="btn btn-primary add-list col-lg-2 ml-5" @click="mois">Mois</button>
                     <button class="btn btn-primary add-list col-lg-2 ml-5" @click="annee">Année</button>
                     <div class="card card-block card-stretch card-height">
                         
-                        <div class="card-header d-flex align-items-center justify-content-between">
+                        <div class="card-header  d-flex align-items-center justify-content-between">
                             <div class="header-title">
                                 <h4 class="card-title">Produits vendus</h4>
                             </div>
@@ -43,8 +43,8 @@
                                 </div>
                             
                         </div>
-                        <div class="card-body">
-                            <column-chart :data="data"></column-chart>
+                        <div class="row">
+                            <column-chart height="500px" :data="data"></column-chart>
                             <!-- <line-chart v-if="periode.to != null" :data="data" label="Nombre de ventes"  xtitle="Temps" ytitle="Nombre"></line-chart> -->
                         </div>
                         
@@ -57,7 +57,7 @@
 
 <script>
 import axios from 'axios'
-import {URL_COMMERCE_API, URL_COMMERCE} from '@/config'
+import {URL_REGIE_API, URL_COMMERCE} from '@/config'
 import Swal from 'sweetalert2'
 //import store from '@/store'
 
@@ -115,7 +115,7 @@ export default {
             if (app.payload.annee != null) {
                 app.payload.annee = app.payload.annee.split('-')[0]
             } 
-                    axios.post(URL_COMMERCE_API+'sellingStat', app.payload)
+                    axios.post(URL_REGIE_API+'sellingStat', app.payload)
             .then(function (reponse){
                 console.log('rep',reponse.data);
                 reponse.data.data.forEach(element => {
@@ -137,3 +137,8 @@ export default {
     },
 }
 </script>
+<style>
+.test{
+    height: 1000px;
+}
+</style>

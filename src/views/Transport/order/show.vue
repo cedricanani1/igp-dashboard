@@ -35,8 +35,8 @@
                                                 <label>status de la commande *</label>
                                                 <select v-model="order.status" class="form-control" name="" id="">
                                                     <option value="new">Nouvelle commande</option>
-                                                    <option value="process">En cours</option>
-                                                    <option value="delivered">Commande livrée</option>
+                                                    <option value="process">Validation</option>
+                                                    <option value="delivered">Commande validée</option>
                                                     <option value="cancel">Annulé</option>
                                                 </select>
                                             </div>
@@ -111,7 +111,8 @@
                                                     <th>Date retour</th>
                                                     <th>Nb jour</th>
                                                     <th>prix total</th>
-                                                    <th>Chauffeur</th>
+                                                    <th>Chaufeur</th>
+                                                    <th>Apperçu</th>
                                                     <th v-if="perms.includes('edit-car-order')">Actions</th>
                                                 </tr>
                                             </thead>
@@ -124,8 +125,10 @@
                                                     <td>{{panier.to}}</td>
                                                     <td>{{panier.days}}</td>
                                                     <td> {{Number(panier.days*panier.price)}}</td>
-                                                    <td v-if="panier.photo" @click="orderImage(panier.photo)"> Avec Chauffeur</td>
-                                                    <td v-else > Sans chauffeur </td>
+                                                    <td v-if="panier.driver == 1"> Avec</td>
+                                                    <td v-else > Sans </td>
+                                                    <td v-if="panier.car.photo" id="myDiv" @click="orderImage( panier.car.photo.split(';')[0])"> voir photo</td>
+                                                    <td v-else>Pas de photo</td>
                                                     <td  v-if="perms.includes('edit-car-order')">
                                                         <div v-if="!panier.edit" class="d-flex align-items-center list-action" >
                                                             <button class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
@@ -189,6 +192,7 @@ export default {
             this.perms.push(element.name)
         });
         this.getorder()
+        
     },
     methods:{
         store() {
@@ -204,7 +208,8 @@ export default {
                 title: '',
                 text: '',
                 imageUrl: URL_TRANSPORT+path,
-                imageAlt: 'Custom image',
+                imageAlt: 'Custom image', 
+  imageHeight: 400,
             })
         },
         save(panier) {
@@ -271,3 +276,14 @@ export default {
     }
 }
 </script>
+
+<style>
+.img{
+    height: 100px;
+    width: 100px;
+}
+#myDiv{
+    cursor:pointer;
+
+}
+</style>

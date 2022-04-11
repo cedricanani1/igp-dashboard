@@ -9,7 +9,7 @@
                             <p class="mb-0">Use category list as to describe your overall core business from the provided list. <br>
                             Click the name of the category where you want to add a list item. .</p>
                         </div>
-                        <!-- <a href="/create-logistique-product" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter un order</a> -->
+                        <a href="/create-logistique-order" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter une commande</a> 
                     </div>
                 </div>
                 <div class="col-lg-12">

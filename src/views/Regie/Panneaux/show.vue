@@ -36,13 +36,24 @@
                                     </div>                          
                                 </div> 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Description *</label>
                                             <input type="text" v-model="panel.description" class="form-control" placeholder="Entrer description" readonly required>
                                             <div class="help-block with-errors"></div>
                                         </div>
-                                    </div>                           
+                                    </div>    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Type de panneau *</label>
+                                            <select class="form-control" v-model="panel.type_panneau_id" name="" id="" readonly>
+                                                <option value="">Choisir une option</option>
+                                                <option v-for="(type, index) in types" :key="index" :value="type.id"> {{ type.libelle }} </option>
+                                                
+                                            </select>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>                        
                                 </div>     
                                 <div class="row">  
                                     <div class="col-md-6">
@@ -135,7 +146,7 @@ import {URL_REGIE} from '@/config'
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
-//import Swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 
 
 export default {
@@ -158,10 +169,31 @@ export default {
             this.perms.push(element.name)
         });
         this.getPAnel()
+        this.getTypes()
     },
 
     methods:{
-        
+        getTypes() {
+            let app = this 
+            app.isLoading =  true
+            axios.get(URL_REGIE_API+'type-panneaux')
+            .then(response => {
+                        
+                console.log(response.data)
+                app.types = response.data
+                app.isLoading =  false
+            })
+            .catch(error => {
+                console.log(error)
+                this.errored = true
+                Swal.fire(
+                        'Erreur!',
+                        'Une erreur s\'est produite lors de la recuperation des données !',
+                        'error'
+                )
+                this.isLoading =  false
+            })
+        },
         getPAnel() {
             this.isLoading = true
             axios.get(URL_REGIE_API+'panels/'+this.$route.params.id)

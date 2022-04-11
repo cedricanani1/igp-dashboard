@@ -10,6 +10,9 @@ export const URL_TRANSPORT = 'https://igp-backend-transport.lce-ci.com/public/'
 export const URL_REGIE_API = 'https://igp-regie-backend.lce-ci.com/api/'
 export const URL_REGIE = 'https://igp-regie-backend.lce-ci.com/public/'
 
+//export const URL_REGIE_API = 'http://192.168.1.4:8000/api/'
+//export const URL_REGIE = 'http://192.168.1.4:8000/public/'
+
 export const URL_LOGISTIQUE_API = 'https://igp-event-backend.lce-ci.com/api/';
 export const URL_LOGISTIQUE = 'https://igp-event-backend.lce-ci.com/public/';
 

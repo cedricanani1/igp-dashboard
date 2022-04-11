@@ -48,20 +48,21 @@
                                                 <div class="help-block with-errors"></div>
                                             </div>
                                         </div>  
-                                         <div class="col-md-6">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Ville *</label>
-                                                <input type="text" min="0" v-model="order.ville" class="form-control" placeholder="" required>
+                                                <textarea v-model="order.location" class="form-control" name="" id="" cols="30" rows="1"></textarea>
                                                 <div class="help-block with-errors"></div>
                                             </div>
                                         </div> 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Lieu de livraison *</label>
-                                                <input type="text" min="0" v-model="order.shipping" class="form-control" placeholder="" required>
+                                                <label>Destination *</label>
+                                                <textarea v-model="order.rent_location" class="form-control" name="" id="" cols="30" rows="1"></textarea>
                                                 <div class="help-block with-errors"></div>
                                             </div>
-                                        </div>                        
+                                        </div> 
+                                                              
                                     </div>                            
                                    
                                 </form>
@@ -73,7 +74,7 @@
                                             <div class="form-group">
                                                 <label>Libelle *</label>
                                                 <select name="" id="" autocomplete="name" v-model="product" class="form-control" @change="onChanges">
-                                                    <option v-for="(product, index) in products" :key="index" :value="product.libelle+' * '+product.description+' * '+product.id+' * '+product.image+'  * '+product.price"> {{ product.libelle }} </option>
+                                                    <option v-for="(car, index) in panels" :key="index" :value="car.libelle+' * '+car.description+' * '+car.id+' * '+car.photo+'  * '+car.price+' * '+car.city.libelle"> {{ car.libelle }} </option>
                                                 </select>
                                                 <div class="help-block with-errors"></div>
                                             </div>
@@ -88,14 +89,7 @@
                                             </div>
                                         </div> 
 
-                                    <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Quantité *</label>
-                                                <input class="form-control" type="number" name="" id="" v-model="qte">
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div> 
-
+                                    
                                      <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Debut *</label>
@@ -112,49 +106,11 @@
                                             </div>
                                         </div> 
 
-                                    <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Couleur *</label>
-                                                <input  class="form-control" type="text" name="" id="" v-model="color">
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>  
-
-                                    <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Lieu *</label>
-                                                <input  class="form-control" type="text" name="" id="" v-model="location">
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>  
-
-                                    <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Objet *</label>
-                                                <input  class="form-control" type="text" name="" id="" v-model="object">
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>  
-
-                                    <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Détails *</label>
-                                                <input  class="form-control" type="text" name="" id="" v-model="details">
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div> 
-
-                                    <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Participants *</label>
-                                                <input  class="form-control" type="number" name="" id="" v-model="participants">
-                                                <div class="help-block with-errors"></div>
-                                            </div>
-                                        </div>     
+                                    
                                     
                                     <div class="col-md-6" v-if="info.libelle != ''">
                                             <div class="form-group">
-                                                <img class="img" :src="URL_LOGISTIQUE+info.photo" alt="">
+                                                <img class="img" :src="URL_TRANSPORT+info.photo" alt="">
                                             </div>
                                     </div> 
                                     <div class="col-md-6" v-if="info.photo != ''">
@@ -184,7 +140,7 @@
 </template>
 <script>
 import axios from "axios";
-import {URL_LOGISTIQUE_API, URL_AUTH_API, URL_LOGISTIQUE} from '@/config'
+import {URL_TRANSPORT_API, URL_AUTH_API, URL_TRANSPORT} from '@/config'
 // Import component
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
@@ -196,26 +152,22 @@ export default {
     },
     data() {
         return {
-            URL_LOGISTIQUE:URL_LOGISTIQUE,
+            URL_TRANSPORT:URL_TRANSPORT,
             order:{
                 nom: '',
                 prenoms: '',
                 user_id: this.$store.state.user.id,
                 cart: new Array(),
-                raison_social: 'LCE sarl'
+                location: '',
+                rent_location: '',
+                shipping: 'neant',
             },
             isLoading: false,
             fullPage: true,
-            user: this.$store.state.user,
             perms:[],
             fullname: '',
             uses: [],
-            products: [],
-            color: '',
-            object: '',
-            details: '',
-            participants: '',
-            location: '',
+            panels: [],
             db: '',
             fn: '',
             qte: 0,
@@ -226,7 +178,8 @@ export default {
                 description: '',
                 photo: '',
                 id: 0,
-                price:0
+                price:0,
+                city: ''
             },
             cart_sent: false,
             today: null
@@ -249,25 +202,22 @@ export default {
         },
         add(){
             this.cart_sent = true
-            if ( this.qte > 0) {
+            if (this.db != '' && this.fn != '') {
                 if (this.fullname != '') {
                     let days = ((((Date.parse(this.fn) - Date.parse(this.db)) / 1000 )/ 60 )/ 60 )/ 24
                         this.order.cart = this.order.cart || []
                     this.order.cart.push({
-                        product_id: this.info.id,
+                        id: this.info.id,
                         photo: this.info.photo,
                         to: this.fn,
-                        location: this.location,
-                        objects: this.object,
-                        details: this.details,
-                        participant: this.participants,
+                        lib: this.info.libelle,
                         from: this.db,
-                        quantity: this.qte,
+                        other:'',
                         days: days + 1,
-                        price: this.info.price,
+                        price: this.info.price * (days + 1),
                     })
                     Swal.fire('Réussi', 'Ajouté au panier.', 'success')
-                    localStorage.setItem('cart_log', JSON.stringify(this.order.cart))
+                    localStorage.setItem('cart_tr', JSON.stringify(this.order.cart))
                     console.log('cart', this.order.cart);
                 }
                 else
@@ -287,30 +237,9 @@ export default {
             this.info.id = Number(this.product.split(' * ')[2])
             this.info.price = Number(this.product.split(' * ')[4])
             this.info.photo = this.product.split(' * ')[3]
+            this.info.city = this.product.split(' * ')[5]
         },
-        /* reset(){
-            this.cart_sent = true
-            if (this.cart.length == 0) {
-                Swal.fire(
-                        'Attention!',
-                        'Remplissez d\'abord le panier.',
-                        'warning'
-                    )
-            }
-             
-
-            this.info.libelle = ''
-            this.info.description = ''
-            this.info.id = 0
-            this.info.photo = ''
-            this.product = ''
-            this.qte = 1
-            this.color = ''
-        }, */
-        store() {
-            this.$router.push('/edit-e-commerce-order/'+this.$route.params.id)
-            
-        },
+        
         updateOrder() {
             
             this.order.cart = this.order.cart || []
@@ -318,7 +247,7 @@ export default {
                     if (this.fullname != '') {
                         if (this.cart_sent == true) {
                         this.isLoading = true
-                        axios.post(URL_LOGISTIQUE_API+'orders', this.order)
+                        axios.post(URL_TRANSPORT_API+'orders', this.order)
                         .then(response => {
                             console.log(response)
                             if (response.data.state == true) {
@@ -336,7 +265,7 @@ export default {
                                     'error'
                                 )
                             }
-                            localStorage.removeItem('cart_log')
+                            localStorage.removeItem('cart_tr')
                             this.order.cart = []
                             /* this.order = response.data */
                                     this.isLoading = false
@@ -383,19 +312,12 @@ export default {
         },
         getProducts(){
             let app = this
-            axios.get(URL_LOGISTIQUE_API+'products')
+            axios.get(URL_TRANSPORT_API+'panels')
             .then(function(reponse) {
                 console.log(reponse);
                 if (reponse) {
-                    app.products = reponse.data.data
-                    reponse.data.data.forEach(element => {
-                        if (element.photo.length > 0) {
-                            element.image = element.photo[0].path
-                        }
-                        else{
-                            element.image = ''
-                        }
-                    });
+                    app.panels = reponse.data
+                    
                 }
             })
             .catch(function(error) {

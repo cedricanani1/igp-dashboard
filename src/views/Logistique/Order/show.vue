@@ -34,8 +34,8 @@
                                                     <label>status de la commande *</label>
                                                     <select v-model="order.status" class="form-control" name="" id="">
                                                         <option value="new">Nouvelle commande</option>
-                                                        <option value="process">En cours</option>
-                                                        <option value="delivered">Commande livrée</option>
+                                                        <option value="process">Validation</option>
+                                                        <option value="delivered">Commande validée</option>
                                                         <option value="cancel">Annulé</option>
                                                     </select>
                                                 </div>
@@ -46,7 +46,14 @@
                                                     <input type="number" min="0" v-model="order.total_amount" class="form-control" placeholder="" readonly>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
-                                            </div>   
+                                            </div>  
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Date de la commande *</label>
+                                                    <input type="text" v-model="order.created_at" class="form-control" placeholder="" readonly>
+                                                    <div class="help-block with-errors"></div>
+                                                </div>
+                                            </div> 
                                         </div>  
                                         <hr>
                                         <div class="row">
@@ -54,35 +61,35 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Nom *</label>
-                                                    <input type="text" min="0" v-model="order.nom" class="form-control" placeholder="" readonly>
+                                                    <input type="text" v-model="order.nom" class="form-control" placeholder="" readonly>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                             </div> 
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Prenoms *</label>
-                                                    <input type="text" min="0" v-model="order.prenoms" class="form-control" placeholder="" readonly>
+                                                    <input type="text" v-model="order.prenoms" class="form-control" placeholder="" readonly>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>  
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Raison sociale *</label>
-                                                    <input type="text" min="0" v-model="order.raison_social" class="form-control" placeholder="" readonly>
+                                                    <input type="text" v-model="order.raison_social" class="form-control" placeholder="" readonly>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>    
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>email *</label>
-                                                    <input type="text" min="0" v-model="order.email" class="form-control" placeholder="" readonly>
+                                                    <input type="text" v-model="order.email" class="form-control" placeholder="" readonly>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Numero *</label>
-                                                    <input type="text" min="0" v-model="order.phone" class="form-control" placeholder="" readonly>
+                                                    <input type="text" v-model="order.phone" class="form-control" placeholder="" readonly>
                                                     <div class="help-block with-errors"></div>
                                                 </div>
                                             </div>                        
@@ -98,8 +105,10 @@
                                                 <thead class="bg-white text-uppercase">
                                                     <tr class="ligth ligth-data">
                                                         <th>#</th>
-                                                        <th>Categories</th>
-                                                        <th>Produits</th>
+                                                        <th>Categorie</th>
+                                                        <th>Produit</th>
+                                                        
+                                                        <th>Description</th>
                                                         <th>quantité</th>
                                                         <th>prix </th>
                                                         <th>Date debut</th>
@@ -109,6 +118,7 @@
                                                         <th>Nb personnes</th>
                                                         <th>Objectif</th>
                                                         <th>prix total</th>
+                                                        <th>Aperçu</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -117,6 +127,8 @@
                                                         <td>{{index+1}}</td>
                                                         <td>{{panier.product.type.libelle}}</td>
                                                         <td>{{panier.product.libelle}}</td>
+                                                        
+                                                        <td>{{panier.product.description}}</td>
                                                         <td>{{panier.quantity}}</td>
                                                         <td v-if="!panier.edit">{{panier.price}}</td>  
                                                         <td v-else> <input type="text" class="form-control col-md-4" v-model="panier.price"> </td>
@@ -127,6 +139,8 @@
                                                         <td>{{panier.participant}}</td>
                                                         <td>{{panier.objects}}</td>
                                                         <td> {{Number(panier.quantity*panier.price)}}</td>
+                                                        <td v-if="panier.product.photo[0].path" id="myDiv" @click="orderImage( panier.product.photo[0].path)"> voir photo</td>
+                                                        <td v-else>Pas de photo</td>
                                                         <td v-if="perms.includes('edit-event-order')">
                                                             <div v-if="!panier.edit" class="d-flex align-items-center list-action" >
                                                                 <button class="btn bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
@@ -166,6 +180,8 @@ import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
 import Swal from 'sweetalert2'
+import moment from 'moment'
+moment.locale('fr')
 export default {
     components: {
         Loading
@@ -186,7 +202,7 @@ export default {
             this.perms.push(element.name)
         });
 
-
+        
         this.getorder()
     },
     methods:{
@@ -203,7 +219,8 @@ export default {
                 title: '',
                 text: '',
                 imageUrl: URL_LOGISTIQUE+path,
-                imageAlt: 'Custom image',
+                imageAlt: 'Custom image', 
+  imageHeight: 400,
             })
         },
         save(panier) {
@@ -262,6 +279,7 @@ export default {
                     element.edit=false
                 });
                 this.order = response.data
+                this.order.created_at = moment(response.data.created_at).format("Do MMMM YYYY H:m");
                 this.isLoading = false
                 
             })
@@ -274,3 +292,9 @@ export default {
     }
 }
 </script>
+<style>
+.img{
+    height: 100px;
+    width: 100px;
+}
+</style>

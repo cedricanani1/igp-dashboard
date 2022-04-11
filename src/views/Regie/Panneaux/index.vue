@@ -112,7 +112,7 @@ export default {
                             $('#example').DataTable(
                                 {
                                     "lengthMenu": [ 5,10, 25, 50, 75, 100 ],
-                                    "pageLength": 5,
+                                    "pageLength": 50,
                                     'order':[]
                                 }
                             );

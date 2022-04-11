@@ -106,7 +106,7 @@
                         <div class="card-body">
                             <ul class="list-unstyled row top-product mb-0">
                                 <li class="col-lg-4" v-for="(sell, index) in all_sells" :key="index">
-                                    <div class="card card-block card-stretch card-height mb-2" v-if="sell.count > 0">
+                                    <div class="card card-block card-stretch card-height mb-2" >
                                         <div class="card-body" >
                                             <div class="bg-warning-light rounded">
                                                 <img :src="url_com+sell.photo" class="style-img img-fluid m-auto p-3" :alt="sell.photo">
@@ -125,34 +125,7 @@
                     </div>
                 </div>
                  
-                <div class="col-lg-12">
-                    <div class="card card-block card-stretch card-height">
-                        <div class="card-header d-flex align-items-center justify-content-between">
-                            <div class="header-title">
-                                <h4 class="card-title">Les mieux notés</h4>
-                            </div>
-                            
-                        </div>
-                        <div class="card-body">
-                            <ul class="list-unstyled row top-product mb-0">
-                                <li class="col-lg-3" v-for="(rate, index) in rates" :key="index">
-                                    <div class="card card-block card-stretch card-height mb-2">
-                                        <div class="card-body">
-                                            <div class="bg-warning-light rounded">
-                                                <img :src="url_com+rate.photo" class="style-img img-fluid m-auto p-3" :alt="rate.photo">
-                                            </div>
-                                            <div class="style-text text-left mt-3">
-                                                <h5 class="mb-1"> {{ rate.libelle.toUpperCase() }} </h5>
-                                                <p class="mb-0">Prix :  {{ rate.price }} FCFA</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="col-lg-12">
                     <div class="card card-block card-stretch card-height">
                         <div class="card-header d-flex align-items-center justify-content-between">
@@ -171,7 +144,7 @@
                                             </div>
                                             <div class="style-text text-left mt-3">
                                                 <h5 class="mb-1"> {{ view.libelle.toUpperCase() }} </h5>
-                                                <p class="mb-0">Prix : {{ view.price }} FCFA</p>
+                                                <p class="mb-0">Nombre : {{ view.viewsw }} vue(s)</p>
                                             </div>
                                         </div>
                                     </div>
@@ -282,20 +255,7 @@ export default {
                 console.log('OK', app.all_sells);
             })
         },
-        getBestRate(){
-            let app = this
-            axios.get(URL_REGIE_API+'bestrate')
-            .then(function (reponse){
-                console.log('rates', reponse.data);
-                reponse.data.forEach(element => {
-                    var img = element.photo.split(';')
-                    element.photo = img[0]
-                   
-                });
-                
-                app.rates = reponse.data
-            })
-        }
+        
     },
     mounted(){
         this.today = new Date().toJSON().slice(0,10);

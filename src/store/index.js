@@ -9,7 +9,9 @@ export default  new Vuex.Store({
     token: localStorage.getItem('token') || null,
     roles: localStorage.getItem('roles') || null,
     permissions: localStorage.getItem('permissions') || null,
-    periode : JSON.parse(localStorage.getItem('periode')) || null,
+    cart_log: JSON.parse(localStorage.getItem('cart_log')),
+    cart_reg: JSON.parse(localStorage.getItem('cart_reg')),
+    cart_tr: JSON.parse(localStorage.getItem('cart_tr'))
   },
 
 });

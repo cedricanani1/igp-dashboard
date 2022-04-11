@@ -35,8 +35,8 @@
                                                 <label>status de la commande *</label>
                                                 <select v-model="order.status" class="form-control" name="" id="">
                                                     <option value="new">Nouvelle commande</option>
-                                                    <option value="process">En cours</option>
-                                                    <option value="delivered">Commande livrée</option>
+                                                    <option value="process">Validation</option>
+                                                    <option value="delivered">Campagne démarrée</option>
                                                     <option value="cancel">Annulé</option>
                                                 </select>
                                             </div>
@@ -100,18 +100,22 @@
                                                 <tr class="ligth ligth-data">
                                                     <th>Panneau</th>
                                                     <th>Description</th>
+                                                    <th>Type</th>
+                                                    
                                                     <th>Format</th>
                                                     <th>prix </th>
                                                     <th>Date debut</th>
                                                     <th>Date fin</th>
                                                     <th>Nb jour</th>
                                                     <th>prix total</th>
+                                                    <th>Apperçu</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="ligth-body">
                                                 <tr v-for="(panier,index) in order.carts" :key="index">
                                                     <td>{{panier.panel.libelle}}</td>
                                                     <td> {{ panier.panel.description }} </td>
+                                                    <td> {{ panier.panel.type.libelle }} </td>
                                                     <td> {{ panier.panel.format }} </td>
                                                     <td v-if="!panier.edit">{{panier.price}}</td>  
                                                     <td v-else> <input type="text" class="form-control" v-model="panier.price"> </td>
@@ -119,7 +123,8 @@
                                                     <td>{{panier.to}}</td>
                                                     <td>{{panier.days}}</td>
                                                     <td> {{Number(panier.days*panier.price)}}</td>
-                                                    
+                                                    <td v-if="panier.panel.photo" id="myDiv" @click="orderImage( panier.panel.photo)"> voir photo</td>
+                                                    <td v-else>Pas de photo</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -172,7 +177,7 @@ export default {
         this.user.permissions.forEach(element => {
             this.perms.push(element.name)
         });
-
+        
         this.getorder()
     },
     methods:{
@@ -207,7 +212,8 @@ export default {
                 title: '',
                 text: '',
                 imageUrl: URL_REGIE+path,
-                imageAlt: 'Custom image',
+                imageAlt: 'Custom image', 
+  imageHeight: 400,
             })
         },
         save(panier) {
@@ -275,3 +281,9 @@ export default {
     }
 }
 </script>
+<style>
+.img{
+    height: 150px;
+    width: 150px;
+}
+</style>

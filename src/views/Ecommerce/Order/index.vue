@@ -9,7 +9,7 @@
                             <p class="mb-0">Use category list as to describe your overall core business from the provided list. <br>
                             Click the name of the category where you want to add a list item. .</p>
                         </div>
-                        <!-- <a href="/create-e-commerce-product" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter un order</a> -->
+                        <a href="/create-e-commerce-order" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Ajouter une commande</a> 
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -101,7 +101,8 @@ export default {
                                 {
                                     "lengthMenu": [ 5,10, 25, 50, 75, 100 ],
                                     "pageLength": 10,
-                                    'order':[]
+                                    'order':[],
+                                    'retrieve': true
                                 }
                             );
                         } );
@@ -134,14 +135,14 @@ export default {
                 axios.delete(URL_COMMERCE_API+'orders/'+id)
                 .then(response => {
                     console.log(response.data)
-                    this.orders = response.data
+                    this.getOrders()
                     this.isLoading =  false
                     Swal.fire(
                         'Supprimé!',
                         'La commande a été supprimée.',
                         'success'
                     )
-                    location.reload()
+                    
                 })
                 .catch(error => {
                     console.log(error)

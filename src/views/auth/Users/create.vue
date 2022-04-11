@@ -55,7 +55,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Numero *</label>
-                                                <input type="text" v-model="user.phone" class="form-control" placeholder="">
+                                                <input type="text" v-model="user.phone" class="form-control" placeholder="contact : XXXXXXXXXX" pattern="[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}[0-9]{2}">
                                                 <div class="help-block with-errors"></div>
                                             </div>
                                         </div> 
